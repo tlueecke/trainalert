@@ -1,0 +1,6 @@
+de\trainalert\watcher\HtmlScrapingTrainAlertFetcher.class
+de\trainalert\watcher\TrainAlertFetcher.class
+de\trainalert\watcher\TrainAlert.class
+de\trainalert\watcher\WatcherService.class
+de\trainalert\watcher\TrainAlertRepository.class
+de\trainalert\watcher\WatcherJob.class

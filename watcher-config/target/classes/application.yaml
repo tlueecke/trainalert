@@ -1,0 +1,13 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:1111/eureka
+
+server:
+  port: ${PORT:2222}
+
+spring:
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update

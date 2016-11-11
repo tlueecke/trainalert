@@ -1,0 +1,69 @@
+
+<div class="jumbotron">
+    <div class="container">
+        <h1>Train Watcher Configuration</h1>
+        <p>Configure the trains you want to watch, be on time when you need to!</p>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Watch jobs</div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Terminal</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let job of jobs">
+                            <td>{{job.terminalId}}</td>
+                            <td>{{job.fromHour}}</td>
+                            <td>{{job.toHour}}</td>
+                            <td>
+                                <button type="button" class="btn btn-default" (click)="onSelect(job)">
+                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                                </button>
+                                <button type="button" class="btn btn-default" (click)="deleteJob(job)">
+                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    
+                </table>
+                <div class="panel-footer">
+                    <button type="button" class="btn btn-default" (click)="addJob(job)" id="addJob">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4" *ngIf="selectedJob">
+            <div class="panel panel-default">
+                <div class="panel-heading">Details</div>
+                <div class="panel-body">
+                    <div class="form-group" id="detailsPanel">
+                        <label for="terminalId">Terminal: </label>
+                        <input type="text" class="form-control" id="terminalId" required  [(ngModel)]="selectedJob.terminalId"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="fromHour">From: </label>
+                        <input type="range" class="form-control" id="fromHour" min="0" max="24" step="1" required [(ngModel)]="selectedJob.fromHour"/>
+                        {{selectedJob.fromHour}}
+                    </div>
+                    <div class="form-group">
+                        <label for="toHour">To: </label>
+                        <input type="range" class="form-control" id="toHour" min="0" max="24" step="1" required [(ngModel)]="selectedJob.toHour"/>
+                        {{selectedJob.toHour}}
+                    </div>
+                    <button type="button" class="btn btn-lg btn-primary" (click)="saveJob()">
+                        <span  class="glyphicon glyphicon-floppy-save">Save</span>
+                    </button>
+                </div>
+        </div>
+    </div>
+</div>

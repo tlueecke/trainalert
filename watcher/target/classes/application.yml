@@ -1,0 +1,15 @@
+logging:
+  level:
+    com.gargoylesoftware.htmlunit: ERROR
+
+htmlscraping:
+  timeout: 5000
+
+server:
+  port: ${PORT:2000}
+
+spring:
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
