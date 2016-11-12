@@ -1,6 +1,7 @@
 package de.trainalert.watcher;
 
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -28,21 +29,31 @@ public class WatcherJob {
 	@Autowired
 	private TrainAlertRepository repository;
 
+	@Autowired
+	private ConfigurationClient cfgClient;
+
 	@Scheduled(fixedRate = 1000 * 60 * 10)
 	public void watchTrains() throws SendGridException {
-		List<TrainAlert> trainAlerts = fetcher.fetchTrainAlerts("AH", "ATST");
-		trainAlerts.forEach(this::saveIfNotExisting);
-		if (!trainAlerts.isEmpty()) {
+		List<Route> routes = cfgClient.findRoutesToWatch();
+		Set<String> destinations = routes.stream().filter(r -> r.getEndTerminal() != null).map(r -> r.getEndTerminal())
+				.collect(Collectors.toSet());
+		String[] origins = routes.stream().map(Route::getStartTerminal).toArray(s -> new String[s]);
+		List<TrainAlert> trainAlerts = fetcher.fetchTrainAlerts(origins);
+		List<TrainAlert> realTrainAlerts = trainAlerts.stream().filter(a -> destinations.contains(a.getDestination()))
+				.filter(this::saveIfNotExisting).collect(Collectors.toList());
+		if (!realTrainAlerts.isEmpty()) {
 			sendMail(trainAlerts);
 		}
 	}
 
-	private void saveIfNotExisting(TrainAlert tA) {
+	private boolean saveIfNotExisting(TrainAlert tA) {
 		TrainAlert existing = repository.findByTrainIdAndAlertMessageAndDate(tA.getTrainId(), tA.getAlertMessage(),
 				tA.getDate());
-		if (existing == null) {
+		boolean exists = existing == null;
+		if (exists) {
 			repository.save(tA);
 		}
+		return exists;
 	}
 
 	private void sendMail(List<TrainAlert> lateOrMissedTrains) throws SendGridException {
@@ -52,8 +63,8 @@ public class WatcherJob {
 		mail.setFrom("tim.lueecke@capgemini.com");
 		mail.addToName("Tim Lüecke");
 		mail.setSubject("Zugalarm!");
-		String text = "Verspätete oder ausgefallene Züge:\n\n" + lateOrMissedTrains.stream()
-				.filter(a -> a.getId() != null).map(t -> t.toString()).collect(Collectors.joining("\n\n"));
+		String text = "Verspätete oder ausgefallene Züge:\n\n"
+				+ lateOrMissedTrains.stream().map(t -> t.toString()).collect(Collectors.joining("\n\n"));
 		LOG.info("Sending mail content: " + text);
 		mail.setText(text);
 

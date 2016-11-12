@@ -1,0 +1,16 @@
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 5
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+
+server:
+  port: ${PORT:8761}
+
+security:
+  basic:
+    enabled: true
+  user:
+    name: eureka
+    password: changeme
