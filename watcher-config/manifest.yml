@@ -3,4 +3,4 @@ applications:
 - name: trainwatcher-config
   path: target/watcher-config.jar
   host: trainwatcher-config
-  memory: 512M
+  memory: 768M
