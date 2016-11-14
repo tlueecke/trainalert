@@ -1,6 +1,8 @@
 package de.trainalert.watcher;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -25,7 +27,7 @@ public class TrainAlert {
 
 	private String alertMessage;
 
-	private Date date = new Date(System.currentTimeMillis());
+	private Date date = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
 	public String getTrainId() {
 		return trainId;

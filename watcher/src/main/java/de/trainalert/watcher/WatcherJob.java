@@ -30,16 +30,17 @@ public class WatcherJob {
 	private TrainAlertRepository repository;
 
 	@Autowired
-	private ConfigurationClient cfgClient;
+	private ConfigurationService cfgService;
 
-	@Scheduled(fixedRate = 1000 * 60 * 10)
+	@Scheduled(fixedRateString = "${watchRate}")
 	public void watchTrains() throws SendGridException {
-		List<Route> routes = cfgClient.findRoutesToWatch();
+		List<Route> routes = cfgService.findRoutesToWatch();
 		Set<String> destinations = routes.stream().filter(r -> r.getEndTerminal() != null).map(r -> r.getEndTerminal())
 				.collect(Collectors.toSet());
 		String[] origins = routes.stream().map(Route::getStartTerminal).toArray(s -> new String[s]);
 		List<TrainAlert> trainAlerts = fetcher.fetchTrainAlerts(origins);
-		List<TrainAlert> realTrainAlerts = trainAlerts.stream().filter(a -> destinations.contains(a.getDestination()))
+		List<TrainAlert> realTrainAlerts = trainAlerts.stream()
+				.filter(a -> destinations.isEmpty() || destinations.contains(a.getDestination()))
 				.filter(this::saveIfNotExisting).collect(Collectors.toList());
 		if (!realTrainAlerts.isEmpty()) {
 			sendMail(trainAlerts);
@@ -49,11 +50,11 @@ public class WatcherJob {
 	private boolean saveIfNotExisting(TrainAlert tA) {
 		TrainAlert existing = repository.findByTrainIdAndAlertMessageAndDate(tA.getTrainId(), tA.getAlertMessage(),
 				tA.getDate());
-		boolean exists = existing == null;
-		if (exists) {
+		boolean exists = existing != null;
+		if (!exists) {
 			repository.save(tA);
 		}
-		return exists;
+		return !exists;
 	}
 
 	private void sendMail(List<TrainAlert> lateOrMissedTrains) throws SendGridException {

@@ -5,6 +5,8 @@ logging:
 htmlscraping:
   timeout: 5000
 
+watchRate: 60000
+
 server:
   port: ${PORT:2000}
 
@@ -15,10 +17,6 @@ spring:
       ddl-auto: update
 
 eureka:
-  instance:
-    non-secure-port: 80
-    metadata-map.instanceId: ${vcap.application.instance_id}
-    hostname: ${vcap.application.uris[0]:http://localhost:2000}
   client:
     serviceUrl:
       defaultZone: ${vcap.services.eureka-service.credentials.uri:http://localhost:8761}/eureka/
