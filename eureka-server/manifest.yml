@@ -1,0 +1,6 @@
+---
+applications:
+- name: eureka-server
+  path: target/eureka-server.jar
+  host: trainalert-eureka-server
+  memory: 512M

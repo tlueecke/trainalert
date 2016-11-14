@@ -1,0 +1,6 @@
+---
+applications:
+- name: trainwatcher
+  path: target/watcher.jar
+  host: trainwatcher
+  memory: 768M
