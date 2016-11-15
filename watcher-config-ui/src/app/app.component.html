@@ -43,52 +43,81 @@
             </div>
         </div>
         <div class="col-md-4" *ngIf="selectedJob">
-            <div class="panel panel-default">
-                <div class="panel-heading">Details</div>
+            <div class="panel panel-default" id="detailsPanel">
+                <div class="panel-heading">Watch for me the following:</div>
                 <div class="panel-body">
-                    <div class="form-group" id="detailsPanel">
-                        <label for="terminalId">Terminal: </label>
-                        <input type="text" class="form-control" id="terminalId" required  [(ngModel)]="selectedJob.terminalId"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="fromHour">From: </label>
-                        <input type="range" class="form-control" id="fromHour" min="0" max="24" step="1" required [(ngModel)]="selectedJob.fromHour"/>
-                        {{selectedJob.fromHour}}
-                    </div>
-                    <div class="form-group">
-                        <label for="toHour">To: </label>
-                        <input type="range" class="form-control" id="toHour" min="0" max="24" step="1" required [(ngModel)]="selectedJob.toHour"/>
-                        {{selectedJob.toHour}}
-                    </div>
-                    <div class="form-group">
-                        <label for="activeOnWeekdays">Active on: </label>
-                        <div class="checkbox">
-                            <label for="activeOnMonday" class="checkbox-inline">
-                                <input type="checkbox" id="activeOnMonday" [(ngModel)]="selectedJob.activeOnMonday"> Mo
-                            </label>
-                            <label for="activeOnTuesday" class="checkbox-inline">
-                                <input type="checkbox" id="activeOnTuesday" [(ngModel)]="selectedJob.activeOnTuesday"> Tu
-                            </label>
-                            <label for="activeOnWednesday" class="checkbox-inline">
-                                <input type="checkbox" id="activeOnWednesday" [(ngModel)]="selectedJob.activeOnWednesday"> We
-                            </label>
-                            <label for="activeOnThursday" class="checkbox-inline">
-                                <input type="checkbox" id="activeOnThursday" [(ngModel)]="selectedJob.activeOnThursday"> Th
-                            </label>
-                            <label for="activeOnFriday" class="checkbox-inline">
-                                <input type="checkbox" id="activeOnFriday" [(ngModel)]="selectedJob.activeOnFriday"> Fr
-                            </label>
-                            <label for="activeOnSaturday" class="checkbox-inline">
-                                <input type="checkbox" id="activeOnSaturday" [(ngModel)]="selectedJob.activeOnSaturday"> Sa
-                            </label>
-                            <label for="activeOnSunday" class="checkbox-inline">
-                                <input type="checkbox" id="activeOnSunday" [(ngModel)]="selectedJob.activeOnSunday"> Su
-                            </label>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="terminalId">Terminal: </label>
+                                <input type="text" class="form-control" id="terminalId" required  [(ngModel)]="selectedJob.terminalId"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="hourRangeHour">During: </label>
+                                <div class="input-group">
+                                    <div class="input-group-addon">From:</div>
+                                    <input type="text" class="form-control" id ="fromHour" required [(ngModel)]="selectedJob.hourRangeStart"/>
+                                    <div class="input-group-addon">To:</div>
+                                    <input type="text" class="form-control" id ="toHour" required [(ngModel)]="selectedJob.hourRangeEnd"/>
+                                </div>
+                                <nouislider id="hourRange" [connect]="true" [min]="0" [max]="24" [step]="1" [(ngModel)]="selectedJob.hourRange"></nouislider>
+                            </div>
+                            <label for="activeOnWeekdays">Active on: </label>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-primary" (click)="saveJob()">Save</button>
-                    <button type="button" class="btn" (click)="cancelJob()">Cancel</button>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="activeOnMonday" [(ngModel)]="selectedJob.activeOnMonday"> Monday
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="activeOnTuesday" [(ngModel)]="selectedJob.activeOnTuesday"> Tuesday
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="activeOnWednesday" [(ngModel)]="selectedJob.activeOnWednesday"> Wednesday
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="activeOnThursday" [(ngModel)]="selectedJob.activeOnThursday"> Thursday
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="activeOnFriday" [(ngModel)]="selectedJob.activeOnFriday"> Friday
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="activeOnSaturday" [(ngModel)]="selectedJob.activeOnSaturday"> Saturday
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="activeOnSunday" [(ngModel)]="selectedJob.activeOnSunday"> Sunday
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-primary" (click)="saveJob()">Save</button>
+                            <button type="button" class="btn" (click)="cancelJob()">Cancel</button>
+                        </div>
+                    </div>
                 </div>
+            </div>
         </div>
     </div>
 </div>

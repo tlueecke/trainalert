@@ -2,13 +2,43 @@ export class TerminalWatchJob {
 
     terminalId : string;
 
-    fromHour : number;
-
-    toHour : number;
-
     url : string;
 
     activeOnWeekdays : string[] = new Array<string>();
+
+    private fromHour : number;
+
+    private toHour : number;
+
+    private _hourRange : number[] = [10,12];
+
+    get hourRange() : number[] {
+        return this._hourRange;
+    }
+
+    set hourRange(range : number[]) {
+        this._hourRange = range;
+        this.fromHour = range[0];
+        this.toHour = range[1];
+    }
+
+    get hourRangeStart() : number {
+        return this.fromHour;
+    }
+
+    set hourRangeStart(fromHour : number) {
+        this._hourRange = [fromHour, this._hourRange[1]];
+        this.fromHour = fromHour;
+    }
+
+    get hourRangeEnd() : number {
+        return this.toHour;
+    }
+
+    set hourRangeEnd(toHour : number) {
+        this._hourRange = [this._hourRange[0], toHour];
+        this.toHour = toHour;
+    }
 
     get activeOnMonday() {
         return this.getWeekdayFlag("MONDAY");

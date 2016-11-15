@@ -19,8 +19,8 @@ export class AppComponent implements OnInit {
     onSelect(job : TerminalWatchJob) : void {
         this.selectedJob = new TerminalWatchJob();
         this.selectedJob.terminalId = job.terminalId;
-        this.selectedJob.fromHour = job.fromHour;
-        this.selectedJob.toHour = job.toHour;
+        this.selectedJob.hourRangeStart = job.hourRangeStart;
+        this.selectedJob.hourRangeEnd = job.hourRangeEnd;
         this.selectedJob.url = job.url;
         this.selectedJob.activeOnWeekdays = job.activeOnWeekdays;
     }
