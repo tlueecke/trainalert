@@ -1,5 +1,7 @@
 export class TerminalWatchJob {
 
+    active : boolean;
+
     terminalId : string;
 
     url : string;
@@ -10,9 +12,14 @@ export class TerminalWatchJob {
 
     private toHour : number;
 
-    private _hourRange : number[] = [10,12];
+    private _hourRange : number[];
 
     get hourRange() : number[] {
+        console.log("retrieve hourrange" + this._hourRange);
+        if (this._hourRange == undefined) {
+            this._hourRange = [this.fromHour, this.toHour];
+        }
+        console.log("returning hourrange" + this._hourRange);
         return this._hourRange;
     }
 

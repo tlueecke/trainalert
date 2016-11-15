@@ -18,10 +18,6 @@ export class TrainWatcherConfigurationService{
             .catch(this.handleError);
     }
 
-    addWatchJob(job : TerminalWatchJob) : void {
-       // this.jobs.add(job);
-    }
-
     saveWatchJob(job : TerminalWatchJob) : Promise<TerminalWatchJob> {
         let headers = new Headers();
         headers.set('Content-Type','application/json');

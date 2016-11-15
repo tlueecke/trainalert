@@ -8,5 +8,5 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 @RepositoryRestResource(path = "config", collectionResourceRel = "terminalWatchJob")
 public interface TerminalWatchJobRepository extends PagingAndSortingRepository<TerminalWatchJob, Long> {
 
-	List<TerminalWatchJob> findByFromHourLessThanEqualAndToHourGreaterThan(int fromHour, int toHour);
+	List<TerminalWatchJob> findByFromHourLessThanEqualAndToHourGreaterThanAndActiveIsTrue(int fromHour, int toHour);
 }

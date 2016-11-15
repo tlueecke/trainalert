@@ -16,11 +16,12 @@ export class AppComponent implements OnInit {
         this.selectedJob = null;
     }
 
-    onSelect(job : TerminalWatchJob) : void {
+    onEdit(job : TerminalWatchJob) : void {
         this.selectedJob = new TerminalWatchJob();
+        this.selectedJob.active = job.active;
         this.selectedJob.terminalId = job.terminalId;
-        this.selectedJob.hourRangeStart = job.hourRangeStart;
-        this.selectedJob.hourRangeEnd = job.hourRangeEnd;
+        console.log(job.hourRange); 
+        this.selectedJob.hourRange = job.hourRange;
         this.selectedJob.url = job.url;
         this.selectedJob.activeOnWeekdays = job.activeOnWeekdays;
     }
@@ -29,8 +30,14 @@ export class AppComponent implements OnInit {
         this.service.findConfigurations().then(j => this.jobs = j);
     }
 
+    toggleJobActivation(job : TerminalWatchJob) : void {
+        this.service.saveWatchJob(job);
+    }
+
     addJob() : void {
         this.selectedJob = new TerminalWatchJob();
+        this.selectedJob.hourRange = [0, 24];
+        this.selectedJob.active = true;
         this.selectedJob.activeOnMonday = true;
         this.selectedJob.activeOnTuesday = true;
         this.selectedJob.activeOnWednesday = true;

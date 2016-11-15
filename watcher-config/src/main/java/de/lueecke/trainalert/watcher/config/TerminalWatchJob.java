@@ -26,11 +26,14 @@ public class TerminalWatchJob {
 
 	private String weekdays;
 
-	public TerminalWatchJob(String terminalId, Integer fromHour, Integer toHour, String weekdays) {
+	private boolean active;
+
+	public TerminalWatchJob(String terminalId, Integer fromHour, Integer toHour, String weekdays, boolean active) {
 		this.terminalId = terminalId;
 		this.fromHour = fromHour;
 		this.toHour = toHour;
 		this.weekdays = weekdays;
+		this.setActive(active);
 	}
 
 	public TerminalWatchJob() {
@@ -75,5 +78,13 @@ public class TerminalWatchJob {
 
 	public void setActiveOnWeekdays(Set<Weekday> weekdays) {
 		this.weekdays = Weekday.toString(weekdays);
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 }
