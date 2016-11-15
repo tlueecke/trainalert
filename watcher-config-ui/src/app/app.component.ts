@@ -22,6 +22,7 @@ export class AppComponent implements OnInit {
         this.selectedJob.fromHour = job.fromHour;
         this.selectedJob.toHour = job.toHour;
         this.selectedJob.url = job.url;
+        this.selectedJob.activeOnWeekdays = job.activeOnWeekdays;
     }
 
     ngOnInit() : void  {
@@ -30,6 +31,12 @@ export class AppComponent implements OnInit {
 
     addJob() : void {
         this.selectedJob = new TerminalWatchJob();
+        this.selectedJob.activeOnMonday = true;
+        this.selectedJob.activeOnTuesday = true;
+        this.selectedJob.activeOnWednesday = true;
+        this.selectedJob.activeOnThursday = true;
+        this.selectedJob.activeOnFriday = true;
+        
     }
 
     deleteJob(job : TerminalWatchJob) : void {
@@ -38,6 +45,10 @@ export class AppComponent implements OnInit {
 
     saveJob() : void {
         this.service.saveWatchJob(this.selectedJob).then(() => {this.selectedJob = null; this.ngOnInit();});
+    }
+
+    cancelJob() : void {
+        this.selectedJob = null;
     }
 
  }

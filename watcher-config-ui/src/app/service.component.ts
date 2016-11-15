@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { TerminalWatchJob} from './model.component';
-import * as Collections from 'typescript-collections';
 import { Headers, Http, Response, RequestOptions } from '@angular/http';
 import { environment } from '../environments/environment';
 

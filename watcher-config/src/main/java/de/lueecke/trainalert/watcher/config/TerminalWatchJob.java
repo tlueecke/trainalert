@@ -1,5 +1,7 @@
 package de.lueecke.trainalert.watcher.config;
 
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,6 +23,19 @@ public class TerminalWatchJob {
 
 	@NotNull
 	private Integer toHour;
+
+	private String weekdays;
+
+	public TerminalWatchJob(String terminalId, Integer fromHour, Integer toHour, String weekdays) {
+		this.terminalId = terminalId;
+		this.fromHour = fromHour;
+		this.toHour = toHour;
+		this.weekdays = weekdays;
+	}
+
+	public TerminalWatchJob() {
+		super();
+	}
 
 	public Long getId() {
 		return id;
@@ -52,5 +67,13 @@ public class TerminalWatchJob {
 
 	public void setToHour(Integer toHour) {
 		this.toHour = toHour;
+	}
+
+	public Set<Weekday> getActiveOnWeekdays() {
+		return Weekday.fromString(weekdays);
+	}
+
+	public void setActiveOnWeekdays(Set<Weekday> weekdays) {
+		this.weekdays = Weekday.toString(weekdays);
 	}
 }

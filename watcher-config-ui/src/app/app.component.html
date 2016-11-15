@@ -60,9 +60,34 @@
                         <input type="range" class="form-control" id="toHour" min="0" max="24" step="1" required [(ngModel)]="selectedJob.toHour"/>
                         {{selectedJob.toHour}}
                     </div>
-                    <button type="button" class="btn btn-lg btn-primary" (click)="saveJob()">
-                        <span  class="glyphicon glyphicon-floppy-save">Save</span>
-                    </button>
+                    <div class="form-group">
+                        <label for="activeOnWeekdays">Active on: </label>
+                        <div class="checkbox">
+                            <label for="activeOnMonday" class="checkbox-inline">
+                                <input type="checkbox" id="activeOnMonday" [(ngModel)]="selectedJob.activeOnMonday"> Mo
+                            </label>
+                            <label for="activeOnTuesday" class="checkbox-inline">
+                                <input type="checkbox" id="activeOnTuesday" [(ngModel)]="selectedJob.activeOnTuesday"> Tu
+                            </label>
+                            <label for="activeOnWednesday" class="checkbox-inline">
+                                <input type="checkbox" id="activeOnWednesday" [(ngModel)]="selectedJob.activeOnWednesday"> We
+                            </label>
+                            <label for="activeOnThursday" class="checkbox-inline">
+                                <input type="checkbox" id="activeOnThursday" [(ngModel)]="selectedJob.activeOnThursday"> Th
+                            </label>
+                            <label for="activeOnFriday" class="checkbox-inline">
+                                <input type="checkbox" id="activeOnFriday" [(ngModel)]="selectedJob.activeOnFriday"> Fr
+                            </label>
+                            <label for="activeOnSaturday" class="checkbox-inline">
+                                <input type="checkbox" id="activeOnSaturday" [(ngModel)]="selectedJob.activeOnSaturday"> Sa
+                            </label>
+                            <label for="activeOnSunday" class="checkbox-inline">
+                                <input type="checkbox" id="activeOnSunday" [(ngModel)]="selectedJob.activeOnSunday"> Su
+                            </label>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-primary" (click)="saveJob()">Save</button>
+                    <button type="button" class="btn" (click)="cancelJob()">Cancel</button>
                 </div>
         </div>
     </div>

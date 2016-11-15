@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.common.annotations.VisibleForTesting;
+
 @RestController
 public class ConfigQueryController {
 
@@ -26,7 +28,16 @@ public class ConfigQueryController {
 		}
 		int hour = c.get(Calendar.HOUR_OF_DAY);
 		List<TerminalWatchJob> jobs = repository.findByFromHourLessThanEqualAndToHourGreaterThan(hour, hour);
-		return jobs.stream().map(j -> new Route(j.getTerminalId(), null)).collect(Collectors.toList());
+		Weekday currentWeekday = Weekday.fromCalendarId(c.get(Calendar.DAY_OF_WEEK));
+		return jobs.stream()
+				.filter(j -> j.getActiveOnWeekdays().contains(currentWeekday))
+				.map(j -> new Route(j.getTerminalId(), null))
+				.collect(Collectors.toList());
+	}
+
+	@VisibleForTesting
+	protected void setRepository(TerminalWatchJobRepository repository) {
+		this.repository = repository;
 	}
 
 }

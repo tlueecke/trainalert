@@ -30,4 +30,35 @@ public class Route {
 		this.endTerminal = endTerminal;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((endTerminal == null) ? 0 : endTerminal.hashCode());
+		result = prime * result + ((startTerminal == null) ? 0 : startTerminal.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Route other = (Route) obj;
+		if (endTerminal == null) {
+			if (other.endTerminal != null)
+				return false;
+		} else if (!endTerminal.equals(other.endTerminal))
+			return false;
+		if (startTerminal == null) {
+			if (other.startTerminal != null)
+				return false;
+		} else if (!startTerminal.equals(other.startTerminal))
+			return false;
+		return true;
+	}
+
 }
