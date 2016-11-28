@@ -1,7 +1,7 @@
 
 import { TerminalWatchJob }      from './model.component';
 
-let job : TerminalWatchJob;
+let job: TerminalWatchJob;
 
 describe('Model: TerminalWatchJob', () => {
     beforeEach(() => {

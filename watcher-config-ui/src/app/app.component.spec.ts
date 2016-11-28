@@ -9,20 +9,20 @@ import { TerminalWatchJob }      from './model.component';
 import { AppModule } from './app.module';
 
 let cfgServiceStub = {
-  findConfigurations() : Promise<TerminalWatchJob[]> {
+  findConfigurations(): Promise<TerminalWatchJob[]> {
     return Promise.resolve(new TerminalWatchJob[0]);
   }
-}
+};
 
-let fixture : ComponentFixture<AppComponent>;
-let app : AppComponent;
+let fixture: ComponentFixture<AppComponent>;
+let app: AppComponent;
 
 describe('App: WatcherConfigUi', () => {
   beforeEach(() => {
 
     TestBed.configureTestingModule({
-      imports : [AppModule],
-      providers : [{provide:TrainWatcherConfigurationService, useValue:cfgServiceStub}]
+      imports: [AppModule],
+      providers: [{provide: TrainWatcherConfigurationService, useValue: cfgServiceStub}]
     });
 
     fixture = TestBed.createComponent(AppComponent);
@@ -45,7 +45,6 @@ describe('App: WatcherConfigUi', () => {
   }));
 
   it('should create job and render details when add is clicked', () => {
-    
     let addButton = fixture.debugElement.query(By.css('#addJob'));
     expect(addButton).not.toBeNull();
     addButton.triggerEventHandler('click', null);

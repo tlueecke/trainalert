@@ -6,21 +6,21 @@ import { environment } from '../environments/environment';
 import 'rxjs/add/operator/toPromise';
 
 @Injectable()
-export class TrainWatcherConfigurationService{
+export class TrainWatcherConfigurationService {
 
-    constructor(private http : Http) {
+    constructor(private http: Http) {
     }
 
-    findConfigurations() : Promise<TerminalWatchJob[]> {
+    findConfigurations(): Promise<TerminalWatchJob[]> {
         return this.http.get(environment.configUrl)
             .toPromise()
-            .then(this.extractData)
+            .then(this.mapToJob)
             .catch(this.handleError);
     }
 
-    saveWatchJob(job : TerminalWatchJob) : Promise<TerminalWatchJob> {
+    saveWatchJob(job: TerminalWatchJob): Promise<TerminalWatchJob> {
         let headers = new Headers();
-        headers.set('Content-Type','application/json');
+        headers.set('Content-Type', 'application/json');
         let options = new RequestOptions({headers: headers});
         if (job.url) {
             return this.http.put(job.url, job, options)
@@ -31,24 +31,40 @@ export class TrainWatcherConfigurationService{
             return this.http.post(environment.configUrl, job, options)
                 .toPromise()
                 .then(() => job)
-                .catch(this.handleError);;
+                .catch(this.handleError);
         }
     }
 
-    deleteWatchJob(job : TerminalWatchJob) : Promise<TerminalWatchJob> {
+    deleteWatchJob(job: TerminalWatchJob): Promise<TerminalWatchJob> {
         return this.http.delete(job.url)
             .toPromise()
             .then(() => job)
             .catch(this.handleError);
     }
 
-    extractData(response : Response) : TerminalWatchJob[] {
+    mapToDts(job: TerminalWatchJob): TerminalWatchJobDts {
+        let dts = new TerminalWatchJobDts();
+        dts.active = job.active;
+        dts.activeOnWeekdays = job.activeOnWeekdays;
+        dts.fromHour = job.hourRange[0];
+        dts.toHour = job.hourRange[1];
+        dts.terminalId = job.terminalId;
+        return dts;
+    }
+
+    mapToJob(response: Response): TerminalWatchJob[] {
         let data = response.json();
-        let rawJobs = data._embedded.terminalWatchJob
-        let jobs = rawJobs as TerminalWatchJob[];
+        let dtsJobs = data._embedded.terminalWatchJob as TerminalWatchJobDts[];
+        let jobs = new Array<TerminalWatchJob>(dtsJobs.length);
         let i = 0;
         for (i = 0; i < jobs.length; i++) {
-            jobs[i].url = rawJobs[i]._links.self.href;
+            let job = new TerminalWatchJob();
+            job.active = dtsJobs[i].active;
+            job.activeOnWeekdays = dtsJobs[i].activeOnWeekdays;
+            job.hourRange = [dtsJobs[i].fromHour, dtsJobs[i].toHour];
+            job.terminalId = dtsJobs[i].terminalId;
+            job.url = dtsJobs[i]._links.self.href;
+            jobs[i] = job;
         }
         return jobs;
     }
@@ -58,4 +74,28 @@ export class TrainWatcherConfigurationService{
         return Promise.reject(error.message || error);
     }
 
+}
+
+class TerminalWatchJobDts {
+
+    active: boolean;
+
+    terminalId: string;
+
+    activeOnWeekdays: string[] = new Array<string>();
+
+    fromHour: number;
+
+    toHour: number;
+
+    _links: Links;
+
+}
+
+class Links {
+    self: Link;
+}
+
+class Link {
+    href: string;
 }
