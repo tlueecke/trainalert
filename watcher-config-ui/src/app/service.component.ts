@@ -12,6 +12,7 @@ export class TrainWatcherConfigurationService {
     }
 
     findConfigurations(): Promise<TerminalWatchJob[]> {
+        console.log('finding configurations');
         return this.http.get(environment.configUrl)
             .toPromise()
             .then(this.mapToJob)
@@ -19,6 +20,7 @@ export class TrainWatcherConfigurationService {
     }
 
     saveWatchJob(job: TerminalWatchJob): Promise<TerminalWatchJob> {
+        console.log('saving job');
         let headers = new Headers();
         headers.set('Content-Type', 'application/json');
         let options = new RequestOptions({headers: headers});
@@ -54,6 +56,7 @@ export class TrainWatcherConfigurationService {
 
     mapToJob(response: Response): TerminalWatchJob[] {
         let data = response.json();
+        console.log(JSON.stringify(data));
         let dtsJobs = data._embedded.terminalWatchJob as TerminalWatchJobDts[];
         let jobs = new Array<TerminalWatchJob>(dtsJobs.length);
         let i = 0;
@@ -66,6 +69,7 @@ export class TrainWatcherConfigurationService {
             job.url = dtsJobs[i]._links.self.href;
             jobs[i] = job;
         }
+        console.log('Mapped job');
         return jobs;
     }
 

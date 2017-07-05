@@ -16,7 +16,9 @@ public class TerminalWatchJob {
 	private Long id;
 
 	@NotNull
-	private String terminalId;
+	private String fromTerminal;
+
+	private String toTerminal;
 
 	@NotNull
 	private Integer fromHour;
@@ -28,8 +30,10 @@ public class TerminalWatchJob {
 
 	private boolean active;
 
-	public TerminalWatchJob(String terminalId, Integer fromHour, Integer toHour, String weekdays, boolean active) {
-		this.terminalId = terminalId;
+	public TerminalWatchJob(String fromTerminal, String toTerminal, Integer fromHour, Integer toHour, String weekdays,
+			boolean active) {
+		this.fromTerminal = fromTerminal;
+		this.toTerminal = toTerminal;
 		this.fromHour = fromHour;
 		this.toHour = toHour;
 		this.weekdays = weekdays;
@@ -48,12 +52,12 @@ public class TerminalWatchJob {
 		this.id = id;
 	}
 
-	public String getTerminalId() {
-		return terminalId;
+	public String getFromTerminal() {
+		return fromTerminal;
 	}
 
-	public void setTerminalId(String terminalId) {
-		this.terminalId = terminalId;
+	public void setFromTerminal(String terminalId) {
+		this.fromTerminal = terminalId;
 	}
 
 	public Integer getFromHour() {
@@ -86,5 +90,13 @@ public class TerminalWatchJob {
 
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+
+	public void setToTerminal(String toTerminal) {
+		this.toTerminal = toTerminal;
+	}
+
+	public String getToTerminal() {
+		return toTerminal;
 	}
 }

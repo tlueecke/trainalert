@@ -29,18 +29,30 @@ public class ConfigQueryControllerTest {
 	private TerminalWatchJobRepository repositoryMock;
 
 	@Test
-	public void testFindRoutesToWatch() {
-		when(repositoryMock.findByFromHourLessThanEqualAndToHourGreaterThanAndActiveIsTrue(Mockito.anyInt(), Mockito.anyInt()))
-				.thenReturn(Lists.newArrayList(new TerminalWatchJob("HH", 10, 20, "1111111", true)));
+	public void testFindRoutesWithoutDestinationsToWatch() {
+		when(repositoryMock.findByFromHourLessThanEqualAndToHourGreaterThanAndActiveIsTrue(Mockito.anyInt(), Mockito
+				.anyInt()))
+						.thenReturn(Lists.newArrayList(new TerminalWatchJob("HH", null, 10, 20, "1111111", true)));
 
 		List<Route> routes = this.service.findRoutesToWatch(null);
 		assertThat(routes, contains(new Route("HH", null)));
 	}
 
 	@Test
+	public void testFindRoutesWithDestinationsToWatch() {
+		when(repositoryMock.findByFromHourLessThanEqualAndToHourGreaterThanAndActiveIsTrue(Mockito.anyInt(), Mockito
+				.anyInt()))
+						.thenReturn(Lists.newArrayList(new TerminalWatchJob("ATST", "HH", 10, 13, "1111111", true)));
+
+		List<Route> routes = this.service.findRoutesToWatch(null);
+		assertThat(routes, contains(new Route("ATST", "HH")));
+	}
+
+	@Test
 	public void testFindNoRouteMatchingToSingleWeekday() {
-		when(repositoryMock.findByFromHourLessThanEqualAndToHourGreaterThanAndActiveIsTrue(Mockito.anyInt(), Mockito.anyInt()))
-				.thenReturn(Lists.newArrayList(new TerminalWatchJob("H2", 10, 20, "0001000", true)));
+		when(repositoryMock.findByFromHourLessThanEqualAndToHourGreaterThanAndActiveIsTrue(Mockito.anyInt(), Mockito
+				.anyInt()))
+						.thenReturn(Lists.newArrayList(new TerminalWatchJob("H2", null, 10, 20, "0001000", true)));
 
 		Calendar c = Calendar.getInstance();
 		c.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
@@ -50,8 +62,9 @@ public class ConfigQueryControllerTest {
 
 	@Test
 	public void testFindNoRouteMatchingToWeekday() {
-		when(repositoryMock.findByFromHourLessThanEqualAndToHourGreaterThanAndActiveIsTrue(Mockito.anyInt(), Mockito.anyInt()))
-				.thenReturn(Lists.newArrayList(new TerminalWatchJob("H3", 10, 20, "1111101", true)));
+		when(repositoryMock.findByFromHourLessThanEqualAndToHourGreaterThanAndActiveIsTrue(Mockito.anyInt(), Mockito
+				.anyInt()))
+						.thenReturn(Lists.newArrayList(new TerminalWatchJob("H3", null, 10, 20, "1111101", true)));
 
 		Calendar c = Calendar.getInstance();
 		c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
@@ -61,8 +74,9 @@ public class ConfigQueryControllerTest {
 
 	@Test
 	public void testFindNone() {
-		when(repositoryMock.findByFromHourLessThanEqualAndToHourGreaterThanAndActiveIsTrue(Mockito.anyInt(), Mockito.anyInt()))
-				.thenReturn(Lists.newArrayList());
+		when(repositoryMock.findByFromHourLessThanEqualAndToHourGreaterThanAndActiveIsTrue(Mockito.anyInt(), Mockito
+				.anyInt()))
+						.thenReturn(Lists.newArrayList());
 
 		List<Route> routes = this.service.findRoutesToWatch(null);
 		assertThat(routes, empty());

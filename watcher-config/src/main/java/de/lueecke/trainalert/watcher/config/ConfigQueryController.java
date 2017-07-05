@@ -27,11 +27,12 @@ public class ConfigQueryController {
 			c.setTime(date);
 		}
 		int hour = c.get(Calendar.HOUR_OF_DAY);
-		List<TerminalWatchJob> jobs = repository.findByFromHourLessThanEqualAndToHourGreaterThanAndActiveIsTrue(hour, hour);
+		List<TerminalWatchJob> jobs = repository.findByFromHourLessThanEqualAndToHourGreaterThanAndActiveIsTrue(hour,
+				hour);
 		Weekday currentWeekday = Weekday.fromCalendarId(c.get(Calendar.DAY_OF_WEEK));
 		return jobs.stream()
 				.filter(j -> j.getActiveOnWeekdays().contains(currentWeekday))
-				.map(j -> new Route(j.getTerminalId(), null))
+				.map(j -> new Route(j.getFromTerminal(), j.getToTerminal()))
 				.collect(Collectors.toList());
 	}
 
